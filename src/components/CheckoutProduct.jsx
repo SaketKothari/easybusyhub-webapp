@@ -1,7 +1,7 @@
-import { MinusSmIcon, PlusIcon, StarIcon } from '@heroicons/react/solid';
-import Currency from 'react-currency-formatter';
-import Image from 'next/image';
 import { useDispatch } from 'react-redux';
+import Currency from 'react-currency-formatter';
+import { MinusSmIcon, PlusIcon, StarIcon } from '@heroicons/react/solid';
+
 import {
   addToBasket,
   removeFromBasket,
@@ -49,7 +49,7 @@ function CheckoutProduct(props) {
   return (
     <div className="block py-4 sm:grid sm:grid-cols-5 my-16 sm:my-3">
       <div className="text-center sm:text-left">
-        <Image
+        <img
           alt="checkout-img"
           src={image}
           width={200}

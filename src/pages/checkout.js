@@ -1,14 +1,15 @@
-import Image from 'next/image';
+import axios from 'axios';
+import { groupBy } from 'lodash';
+import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+import { useSession } from 'next-auth/react';
+import { loadStripe } from '@stripe/stripe-js';
+import Currency from 'react-currency-formatter';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+
 import Header from '../components/Header';
 import CheckoutProduct from '../components/CheckoutProduct';
-import { useSession } from 'next-auth/react';
-import { useSelector } from 'react-redux';
 import { selectItems, selectTotal } from '../slices/basketSlice';
-import { groupBy } from 'lodash';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import Currency from 'react-currency-formatter';
-import { loadStripe } from '@stripe/stripe-js';
-import axios from 'axios';
 
 const stripePromise = loadStripe(process.env.stripe_public_key);
 
@@ -21,20 +22,30 @@ function Checkout() {
   async function createCheckoutSession() {
     const stripe = await stripePromise;
 
-    // Call the backend to create a checkout session...
-    const checkoutSession = await axios.post('/api/create-checkout-session', {
-      // body
-      items,
-      email: session.user.email,
-    });
+    try {
+      // Call the backend to create a checkout session...
+      const checkoutSession = await axios.post('/api/create-checkout-session', {
+        // body
+        items,
+        email: session.user.email,
+      });
 
-    // After created a session, redirect the user to Stripe Checkout
-    const result = await stripe.redirectToCheckout({
-      sessionId: checkoutSession.data.id,
-    });
+      // After created a session, redirect the user to Stripe Checkout
+      const result = await stripe.redirectToCheckout({
+        sessionId: checkoutSession.data.id,
+      });
 
-    if (result.error) {
-      alert(result.error.message); // @todo : Improve that!
+      if (result.error) {
+        toast.error(
+          'An error occurred while redirecting to checkout. Please try again.'
+        );
+        console.error(result.error.message);
+      }
+    } catch (error) {
+      toast.error(
+        'An error occurred while creating the checkout session. Please try again.'
+      );
+      console.error('Error creating checkout session:', error);
     }
   }
 
@@ -45,7 +56,7 @@ function Checkout() {
       <main className="lg:flex max-w-screen-2xl mx-auto">
         {/* Left */}
         <div className="flex-grow m-5 shadow-sm">
-          <Image
+          <img
             src="https://links.papareact.com/ikj"
             width={1020}
             height={250}

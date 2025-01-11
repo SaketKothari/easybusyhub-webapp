@@ -1,15 +1,15 @@
-import Image from 'next/image';
-import Sidebar from './Sidebar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+import { useSession, signIn, signOut } from 'next-auth/react';
 import {
   MenuIcon,
   SearchIcon,
   ShoppingCartIcon,
 } from '@heroicons/react/outline';
-import { useSelector } from 'react-redux';
+
+import Sidebar from './Sidebar';
 import { selectItems } from '../slices/basketSlice';
-import { useSession, signIn, signOut } from 'next-auth/react';
 
 function Header(props) {
   const { data: session } = useSession();
@@ -17,13 +17,18 @@ function Header(props) {
   const [sidebar, setSidebar] = useState(false);
   const items = useSelector(selectItems);
 
+  // useEffect to ensure sidebar state is set client-side
+  useEffect(() => {
+    setSidebar(false);
+  }, []);
+
   return (
     <>
       <header className="sticky top-0 z-50">
         {/* Top Nav */}
         <div className="flex items-center bg-amazon_blue p-1 flex-grow py-2">
           <div className="mr-5 mt-2 flex items-center flex-grow sm:flex-grow-0">
-            <Image
+            <img
               src="/EasyBusyHub.png"
               onClick={() => router.push('/')}
               width={110}
@@ -74,7 +79,7 @@ function Header(props) {
                   items.length >= 10 ? 'w-6' : 'w-4'
                 } bg-yellow-400 text-center rounded-full text-black font-bold`}
               >
-                {items.length}
+                {items?.length}
               </span>
               <ShoppingCartIcon className="h-10" />
               <p className="hidden md:inline font-extrabold md:text-sm mt-2">

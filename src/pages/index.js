@@ -9,8 +9,8 @@ export default function Home({ products }) {
   const [filteredProducts, setProducts] = useState(products);
 
   function filterProducts(searchText) {
-    const matchedProducts = products.filter((product) =>
-      product.title.toLowerCase().includes(searchText.toLowerCase())
+    const matchedProducts = products?.filter((product) =>
+      product?.title?.toLowerCase().includes(searchText.toLowerCase())
     );
     setProducts([...matchedProducts]);
   }
@@ -28,7 +28,7 @@ export default function Home({ products }) {
         <Banner />
 
         {/* Product Feed */}
-        {filteredProducts.length > 0 ? (
+        {filteredProducts?.length > 0 ? (
           <ProductFeed products={filteredProducts} />
         ) : (
           <h1 className="text-center text-2xl py-4">

@@ -1,9 +1,9 @@
-import Currency from 'react-currency-formatter';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { StarIcon } from '@heroicons/react/solid';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import Currency from 'react-currency-formatter';
+import { StarIcon } from '@heroicons/react/solid';
+
 import { addToBasket } from '../slices/basketSlice';
 
 const MIN_RATING = 1;
@@ -62,7 +62,7 @@ function Product({ id, title, price, description, category, image }) {
         {category}
       </p>
 
-      <Image
+      <img
         alt="product-img"
         src={image}
         width={200}

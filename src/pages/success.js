@@ -1,7 +1,8 @@
-import { CheckCircleIcon } from '@heroicons/react/solid';
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
+import { CheckCircleIcon } from '@heroicons/react/solid';
+
 import Header from '../components/Header';
 import { clearBasket } from '../slices/basketSlice';
 
@@ -12,6 +13,7 @@ function success() {
   useEffect(() => {
     dispatch(clearBasket());
   }, []);
+  
   return (
     <div className="bg-gray-100 h-screen">
       <Header />
