@@ -1,9 +1,10 @@
 import Head from 'next/head';
+import { useState } from 'react';
+import { getSession } from 'next-auth/react';
+
 import Banner from '../components/Banner';
 import Header from '../components/Header';
 import ProductFeed from '../components/ProductFeed';
-import { getSession } from 'next-auth/react';
-import { useState } from 'react';
 
 export default function Home({ products }) {
   const [filteredProducts, setProducts] = useState(products);

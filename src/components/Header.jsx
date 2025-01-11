@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import {
   MenuIcon,
@@ -12,14 +12,16 @@ import Sidebar from './Sidebar';
 import { selectItems } from '../slices/basketSlice';
 
 function Header(props) {
-  const { data: session } = useSession();
   const router = useRouter();
-  const [sidebar, setSidebar] = useState(false);
-  const items = useSelector(selectItems);
+  const { data: session } = useSession();
 
-  // useEffect to ensure sidebar state is set client-side
+  const items = useSelector(selectItems);
+  const [sidebar, setSidebar] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
   useEffect(() => {
     setSidebar(false);
+    setIsMounted(true);
   }, []);
 
   return (
@@ -79,7 +81,7 @@ function Header(props) {
                   items.length >= 10 ? 'w-6' : 'w-4'
                 } bg-yellow-400 text-center rounded-full text-black font-bold`}
               >
-                {items?.length}
+                {isMounted ? items?.length : 0}
               </span>
               <ShoppingCartIcon className="h-10" />
               <p className="hidden md:inline font-extrabold md:text-sm mt-2">
