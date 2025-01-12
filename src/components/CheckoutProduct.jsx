@@ -1,5 +1,4 @@
 import { useDispatch } from 'react-redux';
-import Currency from 'react-currency-formatter';
 import { MinusSmIcon, PlusIcon, StarIcon } from '@heroicons/react/solid';
 
 import {
@@ -7,6 +6,7 @@ import {
   removeFromBasket,
   removeGroupedFromBasket,
 } from '../slices/basketSlice';
+import { formatCurrency } from '../utils/currencyFormatter';
 
 function CheckoutProduct(props) {
   const dispatch = useDispatch();
@@ -70,9 +70,7 @@ function CheckoutProduct(props) {
         </div>
         <p className="text-xs my-2 line-clamp-3">{description}</p>
         {/* {quantity} × <Currency quantity={price * 71} currency="INR" /> ={" "} */}
-        <span className="font-bold">
-          <Currency quantity={total * 71} currency="INR" />
-        </span>
+        <span className="font-bold">{formatCurrency(total * 71, 'INR')}</span>
         {hasPrime && (
           <div className="flex items-center space-x-2">
             <img

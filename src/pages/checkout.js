@@ -4,10 +4,10 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { useSession } from 'next-auth/react';
 import { loadStripe } from '@stripe/stripe-js';
-import Currency from 'react-currency-formatter';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import Header from '../components/Header';
+import { formatCurrency } from '../utils/currencyFormatter';
 import CheckoutProduct from '../components/CheckoutProduct';
 import { selectItems, selectTotal } from '../slices/basketSlice';
 
@@ -107,7 +107,7 @@ function Checkout() {
             <h2 className="whitespace-nowrap">
               Subtotal ({items.length} items):{' '}
               <span className="font-bold">
-                <Currency quantity={total * 71} currency="INR" />
+                {formatCurrency(total * 71, 'INR')}
               </span>
             </h2>
 

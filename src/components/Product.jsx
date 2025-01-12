@@ -1,10 +1,10 @@
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import Currency from 'react-currency-formatter';
 import { StarIcon } from '@heroicons/react/solid';
 
 import { addToBasket } from '../slices/basketSlice';
+import { formatCurrency } from '../utils/currencyFormatter';
 
 const MIN_RATING = 1;
 const MAX_RATING = 5;
@@ -82,9 +82,7 @@ function Product({ id, title, price, description, category, image }) {
 
       <div className="text-xs my-2 line-clamp-2">{description}</div>
 
-      <div className="mb-5">
-        <Currency quantity={price * 71} currency="INR" />
-      </div>
+      <div className="mb-5">{formatCurrency(price * 71, 'INR')}</div>
 
       {hasPrime && (
         <div className="flex items-center space-x-2 -mt-5">

@@ -1,7 +1,8 @@
-import Currency from 'react-currency-formatter';
+import path from 'path';
 import moment from 'moment';
 import { groupBy } from 'lodash';
-import path from 'path';
+
+import { formatCurrency } from '../utils/currencyFormatter';
 
 function Order({ id, amount, amountShipping, images, timestamp, items }) {
   let groupedImages;
@@ -44,11 +45,9 @@ function Order({ id, amount, amountShipping, images, timestamp, items }) {
         <div>
           <p className="text-xs font-bold">TOTAL</p>
           <p>
-            <span className="font-bold">
-              <Currency quantity={amount} currency="INR" />
-            </span>{' '}
-            (Including <Currency quantity={amountShipping} currency="INR" /> for
-            "<span className="italic">Next Day Delivery</span>")
+            <span className="font-bold">{formatCurrency(amount, 'INR')}</span>{' '}
+            (Including {formatCurrency(amountShipping, 'INR')} for "
+            <span className="italic">Next Day Delivery</span>")
           </p>
         </div>
 
