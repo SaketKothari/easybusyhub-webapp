@@ -30,7 +30,7 @@ function Checkout() {
         email: session.user.email,
       });
 
-      // After created a session, redirect the user to Stripe Checkout
+      // After creating a session, redirect the user to Stripe Checkout
       const result = await stripe.redirectToCheckout({
         sessionId: checkoutSession.data.id,
       });
@@ -69,9 +69,7 @@ function Checkout() {
                 items.length > 0 ? 'border-b pb-4' : 'pb-2'
               }`}
             >
-              {items.length === 0
-                ? 'Your Amazon Basket is empty.'
-                : 'Shopping Basket'}
+              {items.length === 0 ? 'Your Basket is empty.' : 'Shopping Basket'}
             </h1>
 
             <TransitionGroup>
@@ -115,6 +113,7 @@ function Checkout() {
 
             <button
               role="link"
+              type="submit"
               onClick={createCheckoutSession}
               disabled={!session}
               className={`button mt-2 ${

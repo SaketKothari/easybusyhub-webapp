@@ -1,4 +1,4 @@
-const LOCALSTORAGE_KEY_PREFIX = 'amazon-clone-ninja';
+const LOCALSTORAGE_KEY_PREFIX = 'easybusyhub';
 
 export default {
   get(item) {

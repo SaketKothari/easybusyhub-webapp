@@ -46,14 +46,17 @@ export default function Home({ products }) {
 // Here, it's executed by Node.js
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-  const products = await fetch('https://fakestoreapi.com/products').then(
-    (res) => res.json()
-  );
-
-  return {
-    props: {
-      products: products,
-      session: session,
-    },
-  };
+  try {
+    const products = await fetch('https://fakestoreapi.com/products').then(
+      (res) => res.json()
+    );
+    return {
+      props: {
+        products: products,
+        session: session,
+      },
+    };
+  } catch (error) {
+    console.error('Function error', error);
+  }
 }

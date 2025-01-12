@@ -35,8 +35,8 @@ function Header(props) {
               onClick={() => router.push('/')}
               width={110}
               height={40}
-              alt="Amazon-Logo"
-              className="cursor-pointer active:transform active:scale-90"
+              alt="logo"
+              className="object-cover cursor-pointer active:transform active:scale-90"
             />
           </div>
 
@@ -101,7 +101,7 @@ function Header(props) {
             All
           </p>
           <p className="link">Prime Video</p>
-          <p className="link">Amazon Business</p>
+          <p className="link">Easybusyhub Business</p>
           <p className="link">Today's Deals</p>
           <p className="link hidden lg:inline-flex">Electronics</p>
           <p className="link hidden lg:inline-flex">Foods & Grocery</p>

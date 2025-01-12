@@ -36,8 +36,7 @@ export default async (req, res) => {
 
   // Create a checkout session with the order amount and currency
   const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
-    shipping_rates: ['shr_1MRqezSCmRpGXuQS0uzV1AVT'], // Created fees in Stripe's dashboard
+    shipping_rates: ['shr_1QgJxdSCmRpGXuQSe1X19IQD'], // Created fees in Stripe's dashboard
     //   shipping_options: [
     //     {
     //       shipping_rate_data: {

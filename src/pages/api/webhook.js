@@ -21,7 +21,7 @@ const fulfillOrder = async (session) => {
 
   return app
     .firestore()
-    .collection('AMAZON_users')
+    .collection('users')
     .doc(session.metadata.email)
     .collection('orders')
     .doc(session.id)

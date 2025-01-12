@@ -1,15 +1,10 @@
 # EasyBusyHub - Ecommerce Webapp
 
-### [Live Site](https://amazon-next-saketkothari.vercel.app)
-
-<img style="text-align:center" src="https://user-images.githubusercontent.com/81709725/123828141-d7574880-d91e-11eb-87a2-adc6dd07ca1e.gif" width="600" height="400"/>
-
-#
+### [Live Site](https://easybusyhub.vercel.app)
 
 ### [Working Video](https://www.linkedin.com/posts/saket-kothari_a-web-app-which-is-fully-responsive-that-activity-6838861781708931072-F_ac?utm_source=share&utm_medium=member_desktop)
 
-A web app which is fully responsive that tries to imitate the desktop version of Amazon website, in this you can add, remove an item to cart,
-It has payment integration and also it has user authentication feature thanks to Firebase.
+A web app build from scratch which is fully responsive that tries to imitate any Ecommerce webapp, in this you can add, remove an item to cart, it has payment integration and also it has user authentication feature thanks to Firebase.
 
 ### Features
 

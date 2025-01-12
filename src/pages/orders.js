@@ -1,7 +1,8 @@
 import moment from 'moment';
-import { db } from '../../firebase';
 import { useRouter } from 'next/router';
 import { getSession, useSession } from 'next-auth/react';
+
+import db from '../../firebase.js';
 
 import Order from '../components/Order';
 import Header from '../components/Header';
@@ -76,7 +77,7 @@ export async function getServerSideProps(context) {
 
   // Firebase DB
   const stripeOrders = await db
-    .collection('AMAZON_users')
+    .collection('users')
     .doc(session.user.email)
     .collection('orders')
     .orderBy('timestamp', 'desc')
