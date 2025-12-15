@@ -11,7 +11,7 @@
     "@reduxjs/toolkit": "^1.8.1",
     "@stripe/stripe-js": "^1.46.0",
     "@tailwindcss/line-clamp": "^0.4.0",
-    "axios": "^1.8.2",
+    "axios": "^1.12.0",
     "firebase": "^10.12.3",
     "firebase-admin": "^12.0.0",
     "loadash": "^1.0.0",
