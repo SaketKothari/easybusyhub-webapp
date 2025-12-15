@@ -1,5 +1,5 @@
-import NextAuth from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
+import NextAuth from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions = {
   // Configure one or more authentication providers
@@ -16,17 +16,17 @@ export const authOptions = {
   ],
   callbacks: {
     async session({ session, token }) {
-      session.user.username = session?.user?.name
-        .split(' ')
-        .join('')
-        .toLocaleLowerCase();
-
-      session.user.uid = token.sub;
+      if (session.user) {
+        session.user.username = session?.user?.name
+          ?.split(" ")
+          .join("")
+          .toLowerCase();
+        session.user.uid = token.sub;
+      }
       return session;
     },
   },
-
-  secret: process.env.NEXTAUTH_URL,
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 export default NextAuth(authOptions);
