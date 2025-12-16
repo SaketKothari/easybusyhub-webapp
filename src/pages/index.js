@@ -68,7 +68,7 @@ export async function getServerSideProps(context) {
       },
     };
   } catch (error) {
-    console.error("Failed to fetch products:", error);
+    console.error("Failed to fetch products:", error.message);
     return {
       props: {
         products: [],
