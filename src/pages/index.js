@@ -52,11 +52,17 @@ export async function getServerSideProps(context) {
     );
     return {
       props: {
-        products: products,
+        products: products || [],
         session: session,
       },
     };
   } catch (error) {
     console.error('Function error', error);
+    return {
+      props: {
+        products:[],
+        session: session,
+      }
+    }
   }
 }
