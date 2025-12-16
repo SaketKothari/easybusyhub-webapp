@@ -1,10 +1,10 @@
-import Head from 'next/head';
-import { useState } from 'react';
-import { getSession } from 'next-auth/react';
+import Head from "next/head";
+import { useState } from "react";
+import { getSession } from "next-auth/react";
 
-import Banner from '../components/Banner';
-import Header from '../components/Header';
-import ProductFeed from '../components/ProductFeed';
+import Banner from "../components/Banner";
+import Header from "../components/Header";
+import ProductFeed from "../components/ProductFeed";
 
 export default function Home({ products }) {
   const [filteredProducts, setProducts] = useState(products);
@@ -47,22 +47,33 @@ export default function Home({ products }) {
 export async function getServerSideProps(context) {
   const session = await getSession(context);
   try {
-    const products = await fetch('https://fakestoreapi.com/products').then(
-      (res) => res.json()
-    );
+    const res = await fetch("https://fakestoreapi.com/products", {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error(`API responded with status: ${res.status}`);
+    }
+
+    const products = await res.json();
+
     return {
       props: {
-        products: products || [],
+        products: Array.isArray(products) ? products : [],
         session: session,
       },
     };
   } catch (error) {
-    console.error('Function error', error);
+    console.error("Failed to fetch products:", error);
     return {
       props: {
-        products:[],
+        products: [],
         session: session,
-      }
-    }
+      },
+    };
   }
 }
