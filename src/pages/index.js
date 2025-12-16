@@ -1,19 +1,31 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getSession } from "next-auth/react";
 
 import Banner from "../components/Banner";
 import Header from "../components/Header";
 import ProductFeed from "../components/ProductFeed";
 
-export default function Home({ products }) {
-  const [filteredProducts, setProducts] = useState(products);
+export default function Home({ products = [] }) {
+  const [filteredProducts, setProducts] = useState(products || []);
+
+  // Sync state when products prop changes
+  useEffect(() => {
+    if (products && products.length > 0) {
+      setProducts(products);
+    }
+  }, [products]);
+
 
   function filterProducts(searchText) {
-    const matchedProducts = products?.filter((product) =>
+    if (!searchText || searchText.trim() === "") {
+      setProducts(products || []);
+      return;
+    }
+    const matchedProducts = (products || []).filter((product) =>
       product?.title?.toLowerCase().includes(searchText.toLowerCase())
     );
-    setProducts([...matchedProducts]);
+    setProducts(matchedProducts);
   }
 
   return (
@@ -29,7 +41,7 @@ export default function Home({ products }) {
         <Banner />
 
         {/* Product Feed */}
-        {filteredProducts?.length > 0 ? (
+        {filteredProducts && filteredProducts.length > 0 ? (
           <ProductFeed products={filteredProducts} />
         ) : (
           <h1 className="text-center text-2xl py-4">
@@ -59,11 +71,15 @@ export async function getServerSideProps(context) {
       throw new Error(`API responded with status: ${res.status}`);
     }
 
-    const products = await res.json();
+    const data = await res.json();
+    
+    // Extract products - handle both array and object responses
+    let products = Array.isArray(data) ? data : (data?.value || data?.products || []);
+    
 
     return {
       props: {
-        products: Array.isArray(products) ? products : [],
+        products: products,
         session: session,
       },
     };
