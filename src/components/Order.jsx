@@ -65,7 +65,7 @@ function Order({ id, amount, amountShipping, images, timestamp, items }) {
           {groupedImages.map((group) => (
             <div className="relative" key={group[1]}>
               <img
-                src={`https://fakestoreapi.com/img/${group[1]}`}
+                src={group[1]}
                 alt=""
                 className="h-20 object-contain sm:h-32"
               />

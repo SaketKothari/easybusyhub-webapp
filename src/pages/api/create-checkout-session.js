@@ -1,4 +1,3 @@
-const path = require('path');
 import { groupBy } from 'lodash';
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -23,7 +22,7 @@ export default async (req, res) => {
 
   // Instead of sending an array of multiple similar values, just group them to save space in session
   const groupedImages = Object.values(
-    groupBy(items.map((item) => path.basename(item.image)))
+    groupBy(items.map((item) => item.image))
   ).map((group) => [group.length, group[0]]);
   /*
     This gives us an array like this (shorter for storing into the session):
