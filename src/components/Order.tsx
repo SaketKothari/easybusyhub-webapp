@@ -1,29 +1,45 @@
-import path from 'path';
-import moment from 'moment';
-import { groupBy } from 'lodash';
+import path from "path";
+import moment from "moment";
+import { groupBy } from "lodash";
 
-import { formatCurrency } from '../utils/currencyFormatter';
+import { formatCurrency } from "../utils/currencyFormatter";
 
-function Order({ id, amount, amountShipping, images, timestamp, items }) {
-  let groupedImages;
+interface OrderProps {
+  id: string;
+  amount: number;
+  amountShipping: number;
+  images: string[];
+  timestamp: number;
+  items: any[];
+}
 
-  if (images.every((image) => !image.startsWith('['))) {
+function Order({
+  id,
+  amount,
+  amountShipping,
+  images,
+  timestamp,
+  items,
+}: OrderProps) {
+  let groupedImages: [number, string][];
+
+  if (images.every((image) => !image.startsWith("["))) {
     // If it doesn't starts with an "[", then it's not an array, so we should fix this
     /*
-            Must be done for retro-compatibility
-            as the previous orders in the DB have the "images" formatted in this old way :
-                [
-                    "https://fakestoreapi.com/img/imageAAA.jpg",
-                    "https://fakestoreapi.com/img/imageAAA.jpg",
-                    "https://fakestoreapi.com/img/imageBBB.jpg",
-                ]
-            
-            We have to transform them into this structure :
-                [
-                    "[2, 'imageAAA.jpg']",
-                    "[1, 'imageBBB.jpg']",
-                ]
-        */
+           Must be done for retro-compatibility
+           as the previous orders in the DB have the "images" formatted in this old way :
+               [
+                   "https://fakestoreapi.com/img/imageAAA.jpg",
+                   "https://fakestoreapi.com/img/imageAAA.jpg",
+                   "https://fakestoreapi.com/img/imageBBB.jpg",
+               ]
+          
+           We have to transform them into this structure :
+               [
+                   "[2, 'imageAAA.jpg']",
+                   "[1, 'imageBBB.jpg']",
+               ]
+       */
     groupedImages = Object.values(
       groupBy(images.map((image) => path.basename(image)))
     ).map((group) => [group.length, group[0]]);
@@ -39,14 +55,14 @@ function Order({ id, amount, amountShipping, images, timestamp, items }) {
       <div className="block sm:flex items-center sm:space-x-10 p-5 bg-gray-100 text-sm text-gray-600">
         <div className="mb-3 sm:mb-0">
           <p className="font-bold text-xs">ORDER PLACED</p>
-          <p>{moment.unix(timestamp).format('MM/DD/YYYY')}</p>
+          <p>{moment.unix(timestamp).format("MM/DD/YYYY")}</p>
         </div>
 
         <div>
           <p className="text-xs font-bold">TOTAL</p>
           <p>
-            <span className="font-bold">{formatCurrency(amount, 'INR')}</span>{' '}
-            (Including {formatCurrency(amountShipping, 'INR')} for "
+            <span className="font-bold">{formatCurrency(amount, "INR")}</span>{" "}
+            (Including {formatCurrency(amountShipping, "INR")} for "
             <span className="italic">Next Day Delivery</span>")
           </p>
         </div>

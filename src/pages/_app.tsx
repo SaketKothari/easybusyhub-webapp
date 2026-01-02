@@ -8,15 +8,16 @@ import { SessionProvider } from "next-auth/react";
 import StorageService from "../services/StorageService";
 import { hydrate } from "../slices/basketSlice";
 import { useEffect } from "react";
+import type { AppProps } from "next/app";
 
-const MyApp = ({ Component, pageProps }) => {
+const MyApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     store.subscribe(() => {
       StorageService.set("basket", JSON.stringify(store.getState().basket));
     });
 
-    let basket = StorageService.get("basket");
-    basket = basket ? JSON.parse(basket) : { items: [] };
+    const basketData = StorageService.get("basket");
+    const basket = basketData ? JSON.parse(basketData) : { items: [] };
     store.dispatch(hydrate(basket));
   });
 

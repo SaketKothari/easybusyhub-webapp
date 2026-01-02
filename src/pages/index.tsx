@@ -5,9 +5,18 @@ import Banner from "../components/Banner";
 import Header from "../components/Header";
 import ProductFeed from "../components/ProductFeed";
 
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  category: string;
+  image: string;
+}
+
 export default function Home() {
-  const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -26,14 +35,14 @@ export default function Home() {
         const data = await res.json();
 
         // Extract products - handle both array and object responses
-        let fetchedProducts = Array.isArray(data)
+        let fetchedProducts: Product[] = Array.isArray(data)
           ? data
           : data?.value || data?.products || [];
 
         setProducts(fetchedProducts);
         setFilteredProducts(fetchedProducts);
       } catch (error) {
-        console.error("Failed to fetch products:", error.message);
+        console.error("Failed to fetch products:", (error as Error).message);
         setProducts([]);
         setFilteredProducts([]);
       }
@@ -42,7 +51,7 @@ export default function Home() {
     fetchProducts();
   }, []);
 
-  function filterProducts(searchText) {
+  function filterProducts(searchText: string) {
     if (!searchText || searchText.trim() === "") {
       setFilteredProducts(products);
       return;

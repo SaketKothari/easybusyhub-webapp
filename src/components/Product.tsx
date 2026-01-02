@@ -1,15 +1,31 @@
-import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { StarIcon } from '@heroicons/react/solid';
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { StarIcon } from "@heroicons/react/solid";
 
-import { addToBasket } from '../slices/basketSlice';
-import { formatCurrency } from '../utils/currencyFormatter';
+import { addToBasket } from "../slices/basketSlice";
+import { formatCurrency } from "../utils/currencyFormatter";
 
 const MIN_RATING = 1;
 const MAX_RATING = 5;
 
-function Product({ id, title, price, description, category, image }) {
+interface ProductProps {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  category: string;
+  image: string;
+}
+
+function Product({
+  id,
+  title,
+  price,
+  description,
+  category,
+  image,
+}: ProductProps) {
   const dispatch = useDispatch();
   const [rating, setRating] = useState(1);
   const [hasPrime, setHasPrime] = useState(true);
@@ -41,10 +57,10 @@ function Product({ id, title, price, description, category, image }) {
         <span className="font-bold">Added to basket!</span>
         <br />
         {product.title.slice(0, 30)}
-        {product.title.length > 30 ? '…' : ''}
+        {product.title.length > 30 ? "…" : ""}
       </>,
       {
-        position: 'bottom-right',
+        position: "bottom-right",
         autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -67,14 +83,14 @@ function Product({ id, title, price, description, category, image }) {
         src={image}
         width={200}
         height={200}
-        style={{ objectFit: 'contain' }}
+        style={{ objectFit: "contain" }}
       />
 
       <h4 className="my-3">{title}</h4>
 
       <div className="flex">
         {Array(rating)
-          .fill()
+          .fill(null)
           .map((_, i) => (
             <StarIcon key={i} className="h-5 text-yellow-500" />
           ))}
@@ -82,7 +98,7 @@ function Product({ id, title, price, description, category, image }) {
 
       <div className="text-xs my-2 line-clamp-2">{description}</div>
 
-      <div className="mb-5">{formatCurrency(price * 71, 'INR')}</div>
+      <div className="mb-5">{formatCurrency(price * 71, "INR")}</div>
 
       {hasPrime && (
         <div className="flex items-center space-x-2 -mt-5">

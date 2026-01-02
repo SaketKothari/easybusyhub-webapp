@@ -1,24 +1,37 @@
-import { useDispatch } from 'react-redux';
-import { MinusSmIcon, PlusIcon, StarIcon } from '@heroicons/react/solid';
+import { useDispatch } from "react-redux";
+import { MinusSmIcon, PlusIcon, StarIcon } from "@heroicons/react/solid";
 
 import {
   addToBasket,
   removeFromBasket,
   removeGroupedFromBasket,
-} from '../slices/basketSlice';
-import { formatCurrency } from '../utils/currencyFormatter';
+} from "../slices/basketSlice";
+import { formatCurrency } from "../utils/currencyFormatter";
 
-function CheckoutProduct(props) {
+interface CheckoutProductProps {
+  id: number;
+  title: string;
+  rating: number;
+  price: number;
+  description: string;
+  category: string;
+  image: string;
+  hasPrime: boolean;
+  quantity: number;
+}
+
+function CheckoutProduct({
+  id,
+  title,
+  rating,
+  price,
+  description,
+  category,
+  image,
+  hasPrime,
+  quantity,
+}: CheckoutProductProps) {
   const dispatch = useDispatch();
-  const id = props.id;
-  const title = props.title;
-  const rating = props.rating;
-  const price = props.price;
-  const description = props.description;
-  const category = props.category;
-  const image = props.image;
-  const hasPrime = props.hasPrime;
-  const quantity = props.quantity;
 
   const total = price * quantity;
 
@@ -63,14 +76,14 @@ function CheckoutProduct(props) {
         <p className="my-3">{title}</p>
         <div className="flex">
           {Array(rating)
-            .fill()
+            .fill(null)
             .map((_, i) => (
               <StarIcon key={i} className="h-5 text-yellow-500" />
             ))}
         </div>
         <p className="text-xs my-2 line-clamp-3">{description}</p>
         {/* {quantity} × <Currency quantity={price * 71} currency="INR" /> ={" "} */}
-        <span className="font-bold">{formatCurrency(total * 71, 'INR')}</span>
+        <span className="font-bold">{formatCurrency(total * 71, "INR")}</span>
         {hasPrime && (
           <div className="flex items-center space-x-2">
             <img

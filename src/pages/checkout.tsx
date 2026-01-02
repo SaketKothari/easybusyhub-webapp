@@ -1,33 +1,55 @@
-import axios from 'axios';
-import { groupBy } from 'lodash';
-import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
-import { useSession } from 'next-auth/react';
-import { loadStripe } from '@stripe/stripe-js';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import axios from "axios";
+import { groupBy } from "lodash";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { useSession } from "next-auth/react";
+import { loadStripe } from "@stripe/stripe-js";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-import Header from '../components/Header';
-import { formatCurrency } from '../utils/currencyFormatter';
-import CheckoutProduct from '../components/CheckoutProduct';
-import { selectItems, selectTotal } from '../slices/basketSlice';
+import Header from "../components/Header";
+import { formatCurrency } from "../utils/currencyFormatter";
+import CheckoutProduct from "../components/CheckoutProduct";
+import { selectItems, selectTotal, BasketItem } from "../slices/basketSlice";
 
-const stripePromise = loadStripe(process.env.stripe_public_key);
+// Initialize Stripe with proper error handling
+const getStripe = () => {
+  const key = process.env.stripe_public_key;
+  if (!key) {
+    console.error("Stripe public key is not configured");
+    return null;
+  }
+  return loadStripe(key);
+};
 
 function Checkout() {
   const items = useSelector(selectItems);
   const total = useSelector(selectTotal);
   const { data: session } = useSession();
-  const groupedItems = Object.values(groupBy(items, 'id'));
+  const groupedItems: BasketItem[][] = Object.values(groupBy(items, "id"));
 
   async function createCheckoutSession() {
-    const stripe = await stripePromise;
+    if (!session) {
+      toast.error("Please sign in to proceed with checkout.");
+      return;
+    }
 
     try {
+      const stripePromise = getStripe();
+      if (!stripePromise) {
+        toast.error("Payment system is not configured properly.");
+        return;
+      }
+
+      const stripe = await stripePromise;
+      if (!stripe) {
+        toast.error("Failed to initialize payment system.");
+        return;
+      }
+
       // Call the backend to create a checkout session...
-      const checkoutSession = await axios.post('/api/create-checkout-session', {
-        // body
+      const checkoutSession = await axios.post("/api/create-checkout-session", {
         items,
-        email: session.user.email,
+        email: session.user?.email,
       });
 
       // After creating a session, redirect the user to Stripe Checkout
@@ -37,15 +59,16 @@ function Checkout() {
 
       if (result.error) {
         toast.error(
-          'An error occurred while redirecting to checkout. Please try again.'
+          result.error.message ||
+            "An error occurred while redirecting to checkout. Please try again."
         );
-        console.error(result.error.message);
+        console.error(result.error);
       }
     } catch (error) {
       toast.error(
-        'An error occurred while creating the checkout session. Please try again.'
+        "An error occurred while creating the checkout session. Please try again."
       );
-      console.error('Error creating checkout session:', error);
+      console.error("Error creating checkout session:", error);
     }
   }
 
@@ -66,10 +89,10 @@ function Checkout() {
           <div className="flex flex-col p-5 space-y-50 bg-white">
             <h1
               className={`text-3xl ${
-                items.length > 0 ? 'border-b pb-4' : 'pb-2'
+                items.length > 0 ? "border-b pb-4" : "pb-2"
               }`}
             >
-              {items.length === 0 ? 'Your Basket is empty.' : 'Shopping Basket'}
+              {items.length === 0 ? "Your Basket is empty." : "Shopping Basket"}
             </h1>
 
             <TransitionGroup>
@@ -105,9 +128,9 @@ function Checkout() {
         >
           <div className="flex flex-col bg-white p-10 shadow-md">
             <h2 className="whitespace-nowrap">
-              Subtotal ({items.length} items):{' '}
+              Subtotal ({items.length} items):{" "}
               <span className="font-bold">
-                {formatCurrency(total * 71, 'INR')}
+                {formatCurrency(total * 71, "INR")}
               </span>
             </h2>
 
@@ -118,10 +141,10 @@ function Checkout() {
               disabled={!session}
               className={`button mt-2 ${
                 !session &&
-                'from-gray-300 to-gray-500 border-gray-200 text-gray-300 cursor-not-allowed hover:from-gray-300'
+                "from-gray-300 to-gray-500 border-gray-200 text-gray-300 cursor-not-allowed hover:from-gray-300"
               }`}
             >
-              {!session ? 'Sign in to checkout' : 'Proceed to checkout'}
+              {!session ? "Sign in to checkout" : "Proceed to checkout"}
             </button>
           </div>
         </CSSTransition>
