@@ -66,6 +66,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         .then(() => res.status(200).json({ received: true }))
         .catch((err) => res.status(400).send(`Webhook Error: ${err.message}`));
     }
+
+    // Return a 200 response to acknowledge receipt of the event for all other event types
+    res.status(200).json({ received: true });
+  } else {
+    res.setHeader("Allow", "POST");
+    res.status(405).end("Method Not Allowed");
   }
 };
 
